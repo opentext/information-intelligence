@@ -1,0 +1,1415 @@
+{
+	"info": {
+		"_postman_id": "f89643e4-6f50-4b87-875a-efa020571ef5",
+		"name": "document-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30032117"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Get PAAS Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})\r",
+									"let otif_token = pm.response.headers.get('Set-Cookie').split(';')\r",
+									"postman.setEnvironmentVariable(\"tmp_access_token\", otif_token[0])\r",
+									"console.log(postman.getEnvironmentVariable(\"tmp_access_token\"))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/security/authentication/login",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"security",
+								"authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get OCP Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})\r",
+									"if (responseBody.has(\"access_token\")) {\r",
+									"    var jsonData = JSON.parse(responseBody);\r",
+									"    postman.setEnvironmentVariable(\"tmp_access_token\", jsonData.access_token);\r",
+									"    console.log(postman.getEnvironmentVariable(\"tmp_access_token\"));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{otds-url}}/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"{{otds-url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Version",
+			"item": [
+				{
+					"name": "version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/version",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"version"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Classify API",
+			"item": [
+				{
+					"name": "classify",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/file1.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/classify",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"classify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Jeffersons Hypermarket Credit Application 2021 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/classify?action=tme",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "tme"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/halifax_police.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/classify?action=image",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "image"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/gambling.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/classify?action=video",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "video"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Detect API",
+			"item": [
+				{
+					"name": "detect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/file1.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/detect",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"detect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detect-action-protection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Jeffersons Hypermarket Credit Application 2021 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/detect?action=protection",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "protection"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detect-action-language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/User/Downloads/Virements automatiques - Demande.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/detect?action=language",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "language"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Extract API",
+			"item": [
+				{
+					"name": "extract",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/file1.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-metadata",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Jeffersons Hypermarket Credit Application 2021 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=metadata",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "metadata"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-text",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Jeffersons Hypermarket Credit Application 2021 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=text",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Lafferty Address.PNG"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=ocr",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "ocr"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-audio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/ia-va-aa/stt/YoureNotDisabled.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=audio",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "audio"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-pii",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Jeffersons Hypermarket Credit Application 2021 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=eduction&entities=pii",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "pii"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-phi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Innovate Medical Examination Form 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=eduction&entities=phi&country=us",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "phi"
+								},
+								{
+									"key": "country",
+									"value": "us"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-pci",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Virements automatiques - Demande.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/extract?action=eduction&entities=pci&country=us",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "pci"
+								},
+								{
+									"key": "country",
+									"value": "us"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Process API",
+			"item": [
+				{
+					"name": "process",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/Jeffersons Hypermarket Credit Application 2021 1.docx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/process",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "process-action-risk-extraction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/halifax_police.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/process?action=risk-extraction",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"process"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "risk-extraction"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "process-action-risk-classification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-profile-id",
+								"value": "{{profile-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/dev/all/Documents/halifax_police.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{document-api_url}}/mtm-gateway-api/services/mrgservice/v1/process?action=risk-classification",
+							"protocol": "https",
+							"host": [
+								"{{document-api_url}}"
+							],
+							"path": [
+								"mtm-gateway-api",
+								"services",
+								"mrgservice",
+								"v1",
+								"process"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "risk-classification"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
