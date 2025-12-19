@@ -1,0 +1,2609 @@
+{
+	"info": {
+		"_postman_id": "769d4a87-7ce3-42b6-a0be-5a8c980ded70",
+		"name": "infointel-25.4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4404130"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Get GCP Token - password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})\r",
+									"if (pm.response.text().has(\"access_token\")) {\r",
+									"    var jsonData = JSON.parse(pm.response.text());\r",
+									"    pm.environment.set(\"tmp_access_token\", jsonData.access_token);\r",
+									"    // console.log(postman.getEnvironmentVariable(\"tmp_access_token\"));\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{otds_url}}/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"{{otds_url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get GCP Token - client_credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})\r",
+									"if (pm.response.text().has(\"access_token\")) {\r",
+									"    var jsonData = JSON.parse(pm.response.text());\r",
+									"    pm.environment.set(\"tmp_access_token\", jsonData.access_token);\r",
+									"    // console.log(postman.getEnvironmentVariable(\"tmp_access_token\"));\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{otds_url}}/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"{{otds_url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get DEVX Token - client_credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.text().has(\"access_token\")) {\r",
+									"    var jsonData = JSON.parse(pm.response.text());\r",
+									"    pm.environment.set(\"tmp_access_token\", jsonData.access_token);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "tenant_id",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"client_id\": \"{{client_id}}\",\r\n    \"client_secret\": \"{{client_secret}}\", \r\n    \"grant_type\": \"{{grant_type}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{infointel_host}}/tenants/{{tenant_id}}/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"{{infointel_host}}"
+							],
+							"path": [
+								"tenants",
+								"{{tenant_id}}",
+								"oauth2",
+								"token"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utilis",
+			"item": [
+				{
+					"name": "version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/version",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profiles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/profiles",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health-ready",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_gateway}}/health/ready",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_gateway}}",
+								"health",
+								"ready"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/actions",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"actions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/api-docs.yaml",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"api-docs.yaml"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Classify API",
+			"item": [
+				{
+					"name": "classify-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?action=tme&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "tme"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?action=image",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "image"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?action=video",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "video"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-tme-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?processor=ocr&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "processor",
+									"value": "ocr"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-tme-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?action=tme&processor=ocr&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "tme"
+								},
+								{
+									"key": "processor",
+									"value": "ocr"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "classify-action-tme-video-image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/classify?action=tme,video,image&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"classify"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "tme,video,image"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Detect API",
+			"item": [
+				{
+					"name": "detect-action-protection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/detect?action=protection",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "protection"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detect-action-language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/detect?action=language",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "language"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detect-action-protection-language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/detect?action=protection,language&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "protection,language"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detect-action-language-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/detect?action=language&processor=ocr&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"detect"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "language"
+								},
+								{
+									"key": "processor",
+									"value": "ocr"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Extract API",
+			"item": [
+				{
+					"name": "extract-action-metadata",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=metadata",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "metadata"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-text",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=text",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=ocr",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "ocr"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-eduction-pii",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"129\";Not=A?Brand",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=eduction&entities=pii",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "pii"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-eduction-phi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=eduction&entities=phi",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "phi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								},
+								{
+									"key": "parameters",
+									"description": "json file that contains the TME profile ID to be used (i.e: {\"profile\":\"otif_en\"})",
+									"type": "file",
+									"src": "/C:/documents/parameters.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=tme",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "tme"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "extract-action-metadata-text-ocr-eduction-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								},
+								{
+									"key": "parameters",
+									"description": "json file that contains the TME profile ID to be used (i.e: {\"profile\":\"otif_en\"})",
+									"type": "file",
+									"src": "/C:/documents/parameters.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/extract?action=metadata,text,ocr,eduction,tme&entities=phi",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "metadata,text,ocr,eduction,tme"
+								},
+								{
+									"key": "entities",
+									"value": "phi"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Compose API",
+			"item": [
+				{
+					"name": "compose-action-protection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=protection",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "protection"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=language",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "language"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-language-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=language&processor=ocr&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "language"
+								},
+								{
+									"key": "processor",
+									"value": "ocr"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-metadata",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=metadata",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "metadata"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-text",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=text",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=ocr",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "ocr"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-eduction-pii",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"129\";Not=A?Brand",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=eduction&entities=pii",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "pii"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-eduction-phi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=eduction&entities=phi",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "eduction"
+								},
+								{
+									"key": "entities",
+									"value": "phi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								},
+								{
+									"key": "parameters",
+									"description": "json file that contains the TME profile ID to be used (i.e: {\"profile\":\"otif_en\"})",
+									"type": "file",
+									"src": "/C:/documents/parameters.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=tme",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "tme"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compose-action-protection-language-metadata-text-ocr-eduction-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								},
+								{
+									"key": "parameters",
+									"description": "json file that contains the TME profile ID to be used (i.e: {\"profile\":\"otif_en\"})",
+									"type": "file",
+									"src": "/C:/documents/parameters.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/compose?action=protection,language,metadata,text,ocr,eduction,tme&entities=phi",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"compose"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "protection,language,metadata,text,ocr,eduction,tme"
+								},
+								{
+									"key": "entities",
+									"value": "phi"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Process API",
+			"item": [
+				{
+					"name": "process-tme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								},
+								{
+									"key": "parameters",
+									"description": "json file that contains the TME profile ID to be used (i.e: {\"profile\":\"otif_en\"})",
+									"type": "file",
+									"src": "/C:/documents/parameters.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/process",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "process-image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/process",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"process"
+							],
+							"query": [
+								{
+									"key": "fullTmeResult",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "process-video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/process",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"process"
+							],
+							"query": [
+								{
+									"key": "fullTmeResult",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "process-tme-ocr",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate response', function () {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tmp_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/C:/documents/file"
+								},
+								{
+									"key": "parameters",
+									"description": "json file that contains the TME profile ID to be used (i.e: {\"profile\":\"otif_en\"})",
+									"type": "file",
+									"src": "/C:/documents/parameters.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{scheme}}://{{infointel_url}}/{{infointel_basepath}}/v1/process?processor=ocr&outputText=yes",
+							"protocol": "{{scheme}}",
+							"host": [
+								"{{infointel_url}}"
+							],
+							"path": [
+								"{{infointel_basepath}}",
+								"v1",
+								"process"
+							],
+							"query": [
+								{
+									"key": "processor",
+									"value": "ocr"
+								},
+								{
+									"key": "outputText",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
